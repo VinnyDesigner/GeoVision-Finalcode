@@ -1,2 +1,21 @@
+# Dependencies cache
+GeoVision-homepages/node_modules/.vite/
+node_modules/.vite/
 
+# Archives & Temporary files
 GeoVision-homepages.zip
+*.zip
+GeoVision-homepages/scratch/
+scratch/
+
+# Logs
+*.log
+logs
+npm-debug.log*
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea

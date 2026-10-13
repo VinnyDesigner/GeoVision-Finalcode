@@ -1,0 +1,10 @@
+{
+  "name": "geovision-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix GeoVision-homepages run dev",
+    "build": "npm --prefix GeoVision-homepages run build",
+    "preview": "npm --prefix GeoVision-homepages run preview",
+    "lint": "npm --prefix GeoVision-homepages run lint"
+  }
+}
