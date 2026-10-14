@@ -134,7 +134,7 @@ export const CategoryChecklistDrawer: React.FC<CategoryChecklistDrawerProps> = (
   });
 
   return (
-    <div className="absolute top-16 sm:top-20 left-16 sm:left-18 z-[600] w-64 sm:w-72 md:w-76 h-[405px] sm:h-[415px] max-h-[415px] pointer-events-auto flex flex-col animate-slide-in">
+    <div className="absolute top-[76px] sm:top-[86px] left-[68px] sm:left-[80px] rtl:left-auto rtl:right-[68px] sm:rtl:right-[80px] z-[600] w-[calc(100%-80px)] sm:w-72 md:w-76 max-w-xs h-[405px] sm:h-[415px] max-h-[415px] pointer-events-auto flex flex-col animate-slide-in">
       <div className="relative w-full h-full glass-level-3 bg-[#f5f4ee]/95 dark:bg-slate-900/95 backdrop-blur-2xl rounded-[24px] p-3 sm:p-3.5 shadow-2xl border border-white/80 dark:border-slate-800 flex flex-col space-y-2.5 glow-blue overflow-hidden text-slate-900 dark:text-white">
         
         {/* Header */}

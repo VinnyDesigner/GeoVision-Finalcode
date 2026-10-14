@@ -126,28 +126,30 @@ export const AuthModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-lg glass-level-3 rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/80 dark:border-white/10 space-y-5 glow-blue-lg">
+      <div className="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-7 shadow-2xl border border-slate-200/90 dark:border-slate-800 space-y-5 overflow-hidden">
         
-        {/* Close Button */}
+        {/* Close Button — High Visibility Top-Right Badge */}
         <button
+          type="button"
           onClick={() => setLoginModalOpen(false)}
-          className="absolute top-4 right-4 z-10 p-2 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+          className="absolute top-3.5 right-3.5 rtl:right-auto rtl:left-3.5 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white flex items-center justify-center border border-slate-200/80 dark:border-slate-700 shadow-xs transition-all cursor-pointer"
+          aria-label="Close"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.5]" />
         </button>
 
         {/* Modal Top Header Row featuring both official logos */}
-        <div className="flex items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-4 pr-8 rtl:pl-8 rtl:pr-0">
+        <div className="flex items-center justify-center gap-2.5 sm:gap-3 border-b border-slate-200/80 dark:border-slate-800 pb-3.5 pt-1 pr-10 rtl:pl-10 rtl:pr-0">
           <img
             src={getAssetUrl(theme === 'dark' ? 'assets/logos/dge-logo-dark.png' : 'assets/logos/dge-logo.png')}
             alt="Department of Government Enablement"
-            className="h-8 sm:h-9 object-contain shrink-0"
+            className="h-6 xs:h-7 sm:h-8 max-w-[130px] xs:max-w-[145px] sm:max-w-[160px] object-contain shrink-0"
           />
-          <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 shrink-0" />
+          <div className="w-px h-5 sm:h-6 bg-slate-200 dark:bg-slate-700 shrink-0" />
           <img
             src={getAssetUrl(theme === 'dark' ? 'assets/logos/spatial-data-logo-dark.png' : 'assets/logos/spatial-data-logo.png')}
             alt="Abu Dhabi Spatial Data"
-            className="h-7 sm:h-8 object-contain shrink-0"
+            className="h-5.5 xs:h-6.5 sm:h-7 max-w-[120px] xs:max-w-[135px] sm:max-w-[150px] object-contain shrink-0"
           />
         </div>
 

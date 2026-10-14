@@ -89,10 +89,6 @@ export const LandingPage: React.FC = () => {
       icon: Sparkles,
       iconContainerLight: 'bg-blue-50 border border-blue-200/90 text-blue-600',
       iconContainerDark: 'dark:bg-blue-500/20 dark:border-blue-400/50 dark:text-blue-300 dark:shadow-[0_0_20px_rgba(59,130,246,0.35)]',
-      action: () => {
-        const input = document.querySelector('input[type="text"]') as HTMLInputElement;
-        input?.focus();
-      },
     },
     {
       id: 'explore_map',
@@ -103,7 +99,6 @@ export const LandingPage: React.FC = () => {
       icon: Map,
       iconContainerLight: 'bg-cyan-50 border border-cyan-200/90 text-cyan-600',
       iconContainerDark: 'dark:bg-cyan-500/20 dark:border-cyan-400/50 dark:text-cyan-300 dark:shadow-[0_0_20px_rgba(6,182,212,0.35)]',
-      action: () => setCurrentView('map'),
     },
     {
       id: 'discover_data',
@@ -114,12 +109,11 @@ export const LandingPage: React.FC = () => {
       icon: Layers,
       iconContainerLight: 'bg-emerald-50 border border-emerald-200/90 text-emerald-600',
       iconContainerDark: 'dark:bg-emerald-500/20 dark:border-emerald-400/50 dark:text-emerald-300 dark:shadow-[0_0_20px_rgba(16,185,129,0.35)]',
-      action: () => setCurrentView('categories'),
     },
   ];
 
   return (
-    <div className="home-viewport home5-viewport relative w-full h-full min-h-full pt-20 sm:pt-24 pb-6 sm:pb-8 px-4 sm:px-8 md:px-12 lg:px-16 flex flex-col justify-center overflow-hidden">
+    <div className="home-viewport home5-viewport relative w-full h-full min-h-full pt-16 xs:pt-20 sm:pt-24 pb-4 sm:pb-8 px-3.5 xs:px-5 sm:px-8 md:px-12 lg:px-16 flex flex-col justify-center overflow-y-auto md:overflow-hidden">
       
       {/* Background Image Layer - using public/newbg2-dark.jpg for dark theme and newbg2.jpg for light theme */}
       <img
@@ -135,13 +129,10 @@ export const LandingPage: React.FC = () => {
       {/* Main Hero & Search Launchpad Section - Centered Layout */}
       <div className="relative z-10 w-full max-w-4xl lg:max-w-5xl xl:max-w-5xl mx-auto text-center my-auto flex flex-col items-center">
         
-        {/* Top Block: GeoVision Brand Title & Hero Headline — Shifted 15px top */}
-        <div
-          className="w-full flex flex-col items-center -translate-y-[15px]"
-          style={{ transform: 'translateY(-15px)' }}
-        >
+        {/* Top Block: GeoVision Brand Title & Hero Headline */}
+        <div className="w-full flex flex-col items-center">
           {/* GeoVision Brand Title - One Seamless Word with Precision-Aligned Morphing Map Pointer 'o' */}
-          <div className="inline-flex items-center justify-center select-none mb-3 sm:mb-4 md:mb-5">
+          <div className="inline-flex items-center justify-center select-none mb-2 sm:mb-3 md:mb-4">
             <div
               className="flex items-baseline text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-[3.75rem] font-black font-brand geovision-brand-title leading-none tracking-tight"
               style={{ fontFamily: '"Montserrat", sans-serif' }}
@@ -239,8 +230,8 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Hero Headline - Compact, Balanced, Single Consistent Font Color with Deliberate Pause Below */}
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-extrabold text-[#0A192F] dark:text-white tracking-tight leading-tight select-none drop-shadow-xs dark:drop-shadow-md text-center max-w-3xl lg:max-w-4xl mx-auto mb-7 sm:mb-9 md:mb-10 lg:mb-11">
+          {/* Hero Headline - Tight, Balanced typography spacing */}
+          <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-extrabold text-[#0A192F] dark:text-white tracking-tight leading-snug select-none drop-shadow-xs dark:drop-shadow-md text-center max-w-3xl lg:max-w-4xl mx-auto mb-3 sm:mb-4 md:mb-5">
             {isRtl ? (
               <>
                 الذكاء المكاني لإمارة أبوظبي <br className="hidden sm:inline" /> بين يديك
@@ -253,7 +244,7 @@ export const LandingPage: React.FC = () => {
           </h1>
         </div>
 
-        {/* Primary Interaction: Prominent, Centered Frosted Search Bar + Immediate Example Chips — Vertically Centered */}
+        {/* Primary Interaction: Prominent, Centered Frosted Search Bar + Immediate Example Chips */}
         <div className="w-full max-w-2xl md:max-w-3xl lg:max-w-3xl xl:max-w-[48rem] mx-auto flex flex-col items-center">
           <form
             onSubmit={handleSearchSubmit}
@@ -290,71 +281,65 @@ export const LandingPage: React.FC = () => {
             </button>
           </form>
 
-          {/* Suggested Questions Chips Row - Fixed layout footprint so section placements never shift */}
-          <div className="relative w-full h-8 sm:h-9 mt-3.5 sm:mt-4">
-            <div className="absolute top-0 left-0 right-0 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 z-20">
-              {(showAllExamples ? SUGGESTED_QUESTIONS : SUGGESTED_QUESTIONS.slice(0, 3)).map((pill) => (
-                <button
-                  key={pill.id}
-                  type="button"
-                  onClick={() => handlePillClick(pill.queryEn, pill.queryAr)}
-                  className="px-3.5 py-1.5 rounded-full text-xs sm:text-[13px] font-medium text-slate-800 hover:text-blue-700 dark:text-white/95 dark:hover:text-white bg-white/95 hover:bg-white dark:bg-slate-900/75 dark:hover:bg-slate-800/90 backdrop-blur-md border border-slate-300/80 hover:border-blue-400 dark:border-white/20 dark:hover:border-sky-400/80 transition-all shadow-xs hover:shadow-md cursor-pointer hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
-                >
-                  {isRtl ? pill.labelAr : pill.labelEn}
-                </button>
-              ))}
+          {/* Suggested Questions Chips Row - Dynamic flow layout so pills wrap naturally without overlapping cards */}
+          <div className="w-full flex flex-wrap items-center justify-center gap-1.5 sm:gap-2.5 mt-3 sm:mt-4 px-1 z-20">
+            {(showAllExamples ? SUGGESTED_QUESTIONS : SUGGESTED_QUESTIONS.slice(0, 3)).map((pill) => (
+              <button
+                key={pill.id}
+                type="button"
+                onClick={() => handlePillClick(pill.queryEn, pill.queryAr)}
+                className="px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full text-xs sm:text-[13px] font-medium text-slate-800 hover:text-blue-700 dark:text-white/95 dark:hover:text-white bg-white/95 hover:bg-white dark:bg-slate-900/75 dark:hover:bg-slate-800/90 backdrop-blur-md border border-slate-300/80 hover:border-blue-400 dark:border-white/20 dark:hover:border-sky-400/80 transition-all shadow-xs hover:shadow-md cursor-pointer hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
+              >
+                {isRtl ? pill.labelAr : pill.labelEn}
+              </button>
+            ))}
 
-              {SUGGESTED_QUESTIONS.length > 3 && (
-                <button
-                  type="button"
-                  onClick={() => setShowAllExamples((prev) => !prev)}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs sm:text-[13px] font-semibold text-blue-600 dark:text-sky-300 hover:text-blue-700 dark:hover:text-white bg-blue-50/90 hover:bg-blue-100/90 dark:bg-sky-950/70 dark:hover:bg-sky-900/90 backdrop-blur-md border border-blue-200/90 dark:border-sky-500/30 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
-                  aria-expanded={showAllExamples}
-                >
-                  <span>
-                    {showAllExamples
-                      ? (isRtl ? 'عرض أقل' : 'Less')
-                      : (isRtl ? 'المزيد +' : 'More +')}
-                  </span>
-                </button>
-              )}
-            </div>
+            {SUGGESTED_QUESTIONS.length > 3 && (
+              <button
+                type="button"
+                onClick={() => setShowAllExamples((prev) => !prev)}
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs sm:text-[13px] font-semibold text-blue-600 dark:text-sky-300 hover:text-blue-700 dark:hover:text-white bg-blue-50/90 hover:bg-blue-100/90 dark:bg-sky-950/70 dark:hover:bg-sky-900/90 backdrop-blur-md border border-blue-200/90 dark:border-sky-500/30 transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-95 whitespace-nowrap"
+                aria-expanded={showAllExamples}
+              >
+                <span>
+                  {showAllExamples
+                    ? (isRtl ? 'عرض أقل' : 'Less')
+                    : (isRtl ? 'المزيد +' : 'More +')}
+                </span>
+              </button>
+            )}
           </div>
         </div>
 
-        {/* 3 Modern Glass Quick-Launch Cards — Shifted 15px down */}
-        <div
-          className="relative z-10 w-full grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 mt-9 sm:mt-11 md:mt-13 lg:mt-14 translate-y-[15px]"
-          style={{ transform: 'translateY(15px)' }}
-        >
-        {BOTTOM_CARDS.map((card) => {
-          const IconComp = card.icon;
-          return (
-            <div
-              key={card.id}
-              onClick={card.action}
-              className="relative group bg-white/85 hover:bg-white/95 dark:bg-slate-900/55 dark:hover:bg-slate-900/70 backdrop-blur-2xl border border-slate-200/90 hover:border-sky-400/80 dark:border-white/25 dark:hover:border-sky-400/60 shadow-[0_8px_32px_0_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] hover:shadow-[0_12px_36px_0_rgba(56,189,248,0.15)] dark:hover:shadow-[0_12px_36px_0_rgba(56,189,248,0.2)] rounded-2xl p-3 sm:p-3.5 lg:p-4 flex items-center gap-3 sm:gap-3.5 text-left rtl:text-right cursor-pointer select-none transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]"
-            >
-              {/* Modern Ambient Icon Container - Clear and crisp in both light and dark mode */}
+        {/* 3 Modern Glass Quick-Launch Cards - Static Information Display Cards */}
+        <div className="relative z-10 w-full grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-5 sm:mt-7 md:mt-8 lg:mt-9">
+          {BOTTOM_CARDS.map((card) => {
+            const IconComp = card.icon;
+            return (
               <div
-                className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${card.iconContainerLight} ${card.iconContainerDark} flex items-center justify-center shadow-xs group-hover:scale-105 group-hover:text-blue-700 dark:group-hover:text-white transition-all duration-300 shrink-0`}
+                key={card.id}
+                className="relative bg-white/90 dark:bg-slate-900/70 backdrop-blur-2xl border border-slate-200/90 dark:border-white/20 shadow-md rounded-2xl p-3 sm:p-3.5 lg:p-4 flex items-center gap-3 sm:gap-3.5 text-left rtl:text-right cursor-default select-none"
               >
-                <IconComp className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2.2} />
-              </div>
+                {/* Modern Ambient Icon Container - Clear and crisp in both light and dark mode */}
+                <div
+                  className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl ${card.iconContainerLight} ${card.iconContainerDark} flex items-center justify-center shadow-xs shrink-0`}
+                >
+                  <IconComp className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2.2} />
+                </div>
 
-              {/* Text Column - Left aligned */}
-              <div className="min-w-0 flex-1 text-left rtl:text-right">
-                <h3 className="text-sm sm:text-base font-bold text-[#0A192F] group-hover:text-blue-600 dark:text-white dark:group-hover:text-sky-300 transition-colors leading-snug drop-shadow-xs dark:drop-shadow-sm">
-                  {isRtl ? card.titleAr : card.titleEn}
-                </h3>
-                <p className="text-[11px] sm:text-xs text-slate-600 group-hover:text-slate-800 dark:text-white/75 dark:group-hover:text-white/95 font-medium leading-relaxed mt-0.5 line-clamp-2 transition-colors">
-                  {isRtl ? card.descAr : card.descEn}
-                </p>
+                {/* Text Column - Left aligned */}
+                <div className="min-w-0 flex-1 text-left rtl:text-right">
+                  <h3 className="text-sm sm:text-base font-bold text-[#0A192F] dark:text-white leading-snug">
+                    {isRtl ? card.titleAr : card.titleEn}
+                  </h3>
+                  <p className="text-[11px] sm:text-xs text-slate-600 dark:text-white/75 font-medium leading-relaxed mt-0.5 line-clamp-2">
+                    {isRtl ? card.descAr : card.descEn}
+                  </p>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
 
 
       </div>

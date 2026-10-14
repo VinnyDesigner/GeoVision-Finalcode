@@ -1418,11 +1418,11 @@ export const AIMessageSearchResults: React.FC<AIMessageSearchResultsProps> = ({
                   showToast(language === 'ar' ? `التركيز على ${feat.nameAr || feat.nameEn}` : `Focused on ${feat.nameEn}`);
                 }}
                 title={`${language === 'ar' ? feat.nameAr : feat.nameEn} — ${feat.subcategory || feat.category}`}
-                className={`relative rounded-xl bg-white dark:bg-slate-900 border ${isHovered || isSelected || isSummaryAccordionExpanded(feat.id) || isDirectionsAccordionExpanded(feat.id) ? 'border-geovision-blue dark:border-blue-400 ring-2 ring-blue-500/30' : 'border-slate-200/90 dark:border-slate-800'
+                className={`relative rounded-xl overflow-hidden bg-white dark:bg-slate-900 border ${isHovered || isSelected || isSummaryAccordionExpanded(feat.id) || isDirectionsAccordionExpanded(feat.id) ? 'border-geovision-blue dark:border-blue-400 ring-2 ring-blue-500/30' : 'border-slate-200/90 dark:border-slate-800'
                   } hover:border-geovision-blue dark:hover:border-blue-500 cursor-pointer transition-all duration-200 py-1.5 px-2.5 space-y-1 shadow-2xs hover:shadow-md hover:shadow-blue-500/10 group`}
               >
                 {/* Top Category Accent Line */}
-                <div className={`absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r ${styleInfo.accentColor} opacity-75 group-hover:opacity-100 transition-opacity rounded-t-xl`} />
+                <div className={`absolute top-0 inset-x-0 h-[2.5px] bg-linear-to-r ${styleInfo.accentColor} opacity-90 group-hover:opacity-100 transition-opacity`} />
 
                 {/* Compact Row 1: Category Icon + Title */}
                 <div className="flex items-center justify-between gap-1.5">

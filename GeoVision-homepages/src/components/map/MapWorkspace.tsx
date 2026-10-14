@@ -74,26 +74,48 @@ export const MapWorkspace: React.FC = () => {
 
   const [aiPanelOpen, setAiPanelOpen] = useState(true);
   const [panelWidth, setPanelWidth] = useState<number>(480);
+  const [mobilePanelHeight, setMobilePanelHeight] = useState<number>(360);
   const [isResizing, setIsResizing] = useState<boolean>(false);
 
-  const handleStartResize = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleStartResize = (_e: React.MouseEvent | React.TouchEvent) => {
     setIsResizing(true);
   };
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMove = (clientX: number, clientY: number) => {
       if (!isResizing) return;
-      const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
-      let newWidth = isRtl ? e.clientX : window.innerWidth - e.clientX;
-      newWidth = Math.max(340, Math.min(850, newWidth));
-      setPanelWidth(newWidth);
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+        // Vertical height resizing on mobile bottom sheet drawer
+        let newHeight = window.innerHeight - clientY;
+        const minH = 180;
+        const maxH = Math.min(window.innerHeight - 70, 720);
+        newHeight = Math.max(minH, Math.min(maxH, newHeight));
+        setMobilePanelHeight(newHeight);
+      } else {
+        // Horizontal width resizing on desktop/tablet side panel
+        const isRtl = document.documentElement.getAttribute('dir') === 'rtl';
+        let newWidth = isRtl ? clientX : window.innerWidth - clientX;
+        const minW = Math.min(300, window.innerWidth - 60);
+        const maxW = Math.min(850, window.innerWidth - 40);
+        newWidth = Math.max(minW, Math.min(maxW, newWidth));
+        setPanelWidth(newWidth);
+      }
+
       if (mapInstanceRef.current) {
         mapInstanceRef.current.invalidateSize({ animate: false });
       }
     };
 
-    const handleMouseUp = () => {
+    const handleMouseMove = (e: MouseEvent) => handleMove(e.clientX, e.clientY);
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches && e.touches[0]) {
+        handleMove(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    };
+
+    const handleEnd = () => {
       if (isResizing) {
         setIsResizing(false);
         if (mapInstanceRef.current) {
@@ -104,11 +126,15 @@ export const MapWorkspace: React.FC = () => {
 
     if (isResizing) {
       window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
+      window.addEventListener('mouseup', handleEnd);
+      window.addEventListener('touchmove', handleTouchMove, { passive: true });
+      window.addEventListener('touchend', handleEnd);
     }
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mouseup', handleEnd);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleEnd);
     };
   }, [isResizing]);
 
@@ -1360,7 +1386,7 @@ export const MapWorkspace: React.FC = () => {
 
         {/* Floating Data & Filter Drawer */}
         {!pureMapMode && filterDrawerOpen && (
-          <div className="absolute top-[76px] sm:top-[86px] left-3 sm:left-[80px] z-[600] w-[calc(100%-24px)] sm:w-72 max-w-xs h-[408px] max-h-[calc(100vh-100px)] glass-level-3 rounded-3xl p-3 sm:p-3.5 shadow-2xl border border-white/80 dark:border-slate-800 animate-slide-in flex flex-col overflow-hidden pointer-events-auto">
+          <div className="absolute top-[76px] sm:top-[86px] left-[68px] sm:left-[80px] rtl:left-auto rtl:right-[68px] sm:rtl:right-[80px] z-[600] w-[calc(100%-80px)] sm:w-72 max-w-xs h-[408px] max-h-[calc(100vh-100px)] glass-level-3 rounded-3xl p-3 sm:p-3.5 shadow-2xl border border-white/80 dark:border-slate-800 animate-slide-in flex flex-col overflow-hidden pointer-events-auto">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-2 shrink-0">
               <h3 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
                 <Layers className="w-4 h-4 text-geovision-blue" />
@@ -1380,7 +1406,7 @@ export const MapWorkspace: React.FC = () => {
 
         {/* Floating Google Maps Directions HUD Card */}
         {!pureMapMode && (navigationTarget || (activeRouteInfo && selectedFeature)) && (
-          <div className="absolute top-[76px] sm:top-[86px] left-3 sm:left-[80px] rtl:left-auto rtl:right-3 sm:rtl:right-[80px] z-[650] w-[calc(100%-24px)] sm:w-80 max-w-sm glass-level-3 rounded-3xl p-3 sm:p-3.5 shadow-2xl border border-white/80 dark:border-slate-800 animate-slide-in flex flex-col overflow-hidden pointer-events-auto">
+          <div className="absolute top-[76px] sm:top-[86px] left-[68px] sm:left-[80px] rtl:left-auto rtl:right-[68px] sm:rtl:right-[80px] z-[650] w-[calc(100%-80px)] sm:w-80 max-w-sm glass-level-3 rounded-3xl p-3 sm:p-3.5 shadow-2xl border border-white/80 dark:border-slate-800 animate-slide-in flex flex-col overflow-hidden pointer-events-auto">
             {/* Header: Mode & Close Button */}
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-2.5 shrink-0">
               <div className="flex items-center gap-2">
@@ -1604,12 +1630,12 @@ export const MapWorkspace: React.FC = () => {
       {!pureMapMode && (
         <div
           style={{
-            width: aiPanelOpen ? `${panelWidth}px` : '0px',
-            maxWidth: '90vw',
+            width: aiPanelOpen ? (typeof window !== 'undefined' && window.innerWidth < 768 ? '100%' : `${panelWidth}px`) : '0px',
+            height: aiPanelOpen && typeof window !== 'undefined' && window.innerWidth < 768 ? `${mobilePanelHeight}px` : undefined,
           }}
           className={`transition-all ${isResizing ? 'duration-0 select-none' : 'duration-300'} ${
             aiPanelOpen
-              ? 'fixed md:relative inset-x-0 bottom-0 top-auto z-[700] md:z-20 h-[65vh] max-h-[500px] md:max-h-none md:h-full rounded-t-3xl md:rounded-none shadow-2xl border-t md:border-t-0 border-slate-200 dark:border-slate-800 pt-[74px] sm:pt-[82px]'
+              ? 'fixed md:relative inset-x-0 bottom-0 top-auto z-[700] md:z-20 w-full md:w-auto max-h-[85vh] md:max-h-none md:h-full rounded-t-3xl md:rounded-none shadow-2xl border-t md:border-t-0 border-slate-200 dark:border-slate-800 pt-0 md:pt-[70px] lg:pt-[76px]'
               : 'w-0 h-0 overflow-hidden hidden'
           } shrink-0`}
         >

@@ -45,7 +45,7 @@ interface GeoVisionPanelProps {
   onClose?: () => void;
   panelWidth?: number;
   setPanelWidth?: (width: number) => void;
-  onStartResize?: (e: React.MouseEvent) => void;
+  onStartResize?: (e: React.MouseEvent | React.TouchEvent) => void;
   isResizing?: boolean;
 }
 
@@ -523,19 +523,32 @@ export const GeoVisionPanel: React.FC<GeoVisionPanelProps> = ({
   };
 
   return (
-    <div className="w-full h-full flex flex-col bg-white dark:bg-slate-900 border-l border-slate-200/90 dark:border-slate-800 shadow-2xl relative z-[700] overflow-hidden group font-chat">
+    <div className="w-full h-full flex flex-col bg-white dark:bg-slate-900 rounded-t-3xl md:rounded-none border-l md:border-l border-slate-200/90 dark:border-slate-800 shadow-2xl relative z-[700] overflow-hidden group font-chat">
       
-      {/* Left Edge Drag Resizer Handle */}
+      {/* Mobile Top Drag Handle (Vertical Drawer Height Adjustment) */}
       {onStartResize && (
         <div
           onMouseDown={onStartResize}
-          className={`hidden md:flex absolute top-0 bottom-0 left-0 rtl:left-auto rtl:right-0 w-3 hover:w-4 z-50 items-center justify-center cursor-col-resize transition-all group/handle ${
-            isResizing ? 'bg-geovision-blue/30 w-4' : 'bg-transparent hover:bg-geovision-blue/20'
-          }`}
-          title="Drag to extend or reduce panel width (Slider)"
+          onTouchStart={onStartResize}
+          className="md:hidden absolute top-0 inset-x-0 h-6 flex items-center justify-center cursor-row-resize z-50 group/mobilehandle touch-none hover:bg-slate-100/50 dark:hover:bg-slate-800/50 active:bg-blue-50/50 dark:active:bg-slate-800/50 transition-colors"
+          title="Drag vertically up or down to adjust bottom sheet height"
         >
-          <div className="w-1.5 h-10 rounded-full bg-slate-300 dark:bg-slate-700 group-hover/handle:bg-geovision-blue transition-colors flex items-center justify-center shadow-xs">
-            <GripVertical className="w-3 h-3 text-slate-500 dark:text-slate-400 group-hover/handle:text-white" />
+          <div className="w-12 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600 group-hover/mobilehandle:bg-geovision-blue active:bg-geovision-blue transition-colors shadow-xs" />
+        </div>
+      )}
+
+      {/* Desktop & Tablet Left Edge Drag Handle (Horizontal Side Panel Width Adjustment) */}
+      {onStartResize && (
+        <div
+          onMouseDown={onStartResize}
+          onTouchStart={onStartResize}
+          className={`hidden md:flex absolute top-0 bottom-0 left-0 rtl:left-auto rtl:right-0 w-3.5 hover:w-5 z-50 items-center justify-center cursor-col-resize transition-all group/handle touch-none ${
+            isResizing ? 'bg-geovision-blue/30 w-5' : 'bg-transparent hover:bg-geovision-blue/20'
+          }`}
+          title="Drag left or right to adjust panel width (Slider)"
+        >
+          <div className="w-2 h-11 rounded-full bg-slate-300 dark:bg-slate-700 group-hover/handle:bg-geovision-blue transition-colors flex items-center justify-center shadow-md border border-white/60 dark:border-slate-600">
+            <GripVertical className="w-3.5 h-3.5 text-slate-600 dark:text-slate-300 group-hover/handle:text-white" />
           </div>
         </div>
       )}
